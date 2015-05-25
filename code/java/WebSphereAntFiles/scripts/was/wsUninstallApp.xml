@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<!--
+Copyright (c) 2008 McDowell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+
+<project name="wsUninstallApp" default="WAS_wsUninstallApp" basedir=".">
+	<description>
+		Script for uninstalling EAR file.
+
+		Required properties:
+			was_home    the WAS installation directory
+            was_appname       the EAR name (e.g. "fooEAR")
+	
+	    Optional properties:
+	        was_user           user
+	        was_password   password
+			was_failonerror  stops execution on error
+</description>
+
+	<import file="wsClassPath.xml" />
+	<import file="dependencyCheck.xml" />
+
+	<target name="WAS_wsUninstallApp">
+		<property name="dep_var" value="was_home" />
+		<antcall target="depCheck" />
+		<property name="dep_var" value="was_appname" />
+		<antcall target="depCheck" />
+
+		<taskdef name="wsUninstallApp" classname="com.ibm.websphere.ant.tasks.UninstallApplication" classpath="${was_cp}" />
+		<wsUninstallApp application="${was_appname}" user="${was_user}" password="${was_password}" failonerror="${was_failonerror}" washome="${was_home}" />
+	</target>
+
+</project>

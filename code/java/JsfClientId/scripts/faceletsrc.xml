@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE facesconfig [
+<!ENTITY facesconfig SYSTEM "../src/META-INF/faces-config.xml">
+<!ENTITY tld SYSTEM "../src/META-INF/clientid.tld">
+]>
+
+<src:facesrc xmlns:src="urn:src">
+&facesconfig;
+&tld;
+</src:facesrc>

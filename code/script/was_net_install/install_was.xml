@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE agent-input [
+<!ENTITY home "USERHOMEDIR">
+]>
+
+<!--The "acceptLicense" attribute has been deprecated. Use "-acceptLicense" command line option to accept license agreements.-->
+<agent-input acceptLicense='true'>
+<server>
+<repository location='http://www.ibm.com/software/repositorymanager/V85WASDeveloperILANL'/>
+<repository location='http://www.ibm.com/software/repositorymanager/com.ibm.websphere.IBMJAVA.v70'/>
+</server>
+<profile id='IBM WebSphere Application Server V8.5' installLocation='&home;/IBM/WebSphere/AppServer'>
+<data key='eclipseLocation' value='&home;/IBM/WebSphere/AppServer'/>
+<data key='user.import.profile' value='false'/>
+<data key='cic.selector.os' value='linux'/>
+<data key='cic.selector.arch' value='x86'/>
+<data key='cic.selector.ws' value='gtk'/>
+<data key='cic.selector.nl' value='en'/>
+</profile>
+<install modify='false'>
+<offering id='8.5.5.0-WS-WAS-IFPM89206' version='8.5.5000.20130528_1049' profile='IBM WebSphere Application Server V8.5' features='-'/>
+<offering id='8.5.5.0-WS-WAS-IFPM89365' version='8.5.5000.20130528_1108' profile='IBM WebSphere Application Server V8.5' features='-'/>
+<offering id='8.5.5.0-WS-WAS-IFPM90588' version='8.5.5000.20130607_0847' profile='IBM WebSphere Application Server V8.5' features='-'/>
+<offering id='8.5.5.0-WS-WAS-IFPM93496' version='8.5.5000.20130723_1455' profile='IBM WebSphere Application Server V8.5' features='-'/>
+<offering id='com.ibm.websphere.DEVELOPERSILAN.v85' version='8.5.5000.20130514_1044' profile='IBM WebSphere Application Server V8.5' features='core.feature,ejbdeploy,thinclient,embeddablecontainer,com.ibm.sdk.6_32bit' installFixes='none'/>
+<offering id='com.ibm.websphere.IBMJAVA.v70' version='7.0.4001.20130510_2103' profile='IBM WebSphere Application Server V8.5' features='com.ibm.sdk.7' installFixes='none'/>
+<offering id='com.ibm.websphere.liberty.DEVELOPERSILAN.v85' version='8.5.5000.20130514_1313' profile='WebSphere Liberty V8.5' features='liberty,embeddablecontainer,extprogmodels' installFixes='none'/>
+<offering id='com.ibm.websphere.liberty.IBMJAVA.v70' version='7.0.4001.20130510_2103' profile='WebSphere Liberty V8.5' features='com.ibm.sdk.7' installFixes='none'/>
+</install>
+<profile id='WebSphere Liberty V8.5' installLocation='&home;/IBM/WebSphere/Liberty'>
+<data key='eclipseLocation' value='&home;/IBM/WebSphere/Liberty'/>
+<data key='user.import.profile' value='false'/>
+<data key='cic.selector.os' value='linux'/>
+<data key='cic.selector.arch' value='x86'/>
+<data key='cic.selector.ws' value='gtk'/>
+<data key='cic.selector.nl' value='en'/>
+</profile>
+<preference name='com.ibm.cic.common.core.preferences.eclipseCache' value='&home;/IBM/IMShared'/>
+<preference name='com.ibm.cic.common.core.preferences.connectTimeout' value='30'/>
+<preference name='com.ibm.cic.common.core.preferences.readTimeout' value='45'/>
+<preference name='com.ibm.cic.common.core.preferences.downloadAutoRetryCount' value='0'/>
+<preference name='offering.service.repositories.areUsed' value='true'/>
+<preference name='com.ibm.cic.common.core.preferences.ssl.nonsecureMode' value='false'/>
+<preference name='com.ibm.cic.common.core.preferences.http.disablePreemptiveAuthentication' value='false'/>
+<preference name='http.ntlm.auth.kind' value='NTLM'/>
+<preference name='http.ntlm.auth.enableIntegrated.win32' value='true'/>
+<preference name='com.ibm.cic.common.core.preferences.preserveDownloadedArtifacts' value='true'/>
+<preference name='com.ibm.cic.common.core.preferences.keepFetchedFiles' value='false'/>
+<preference name='PassportAdvantageIsEnabled' value='false'/>
+<preference name='com.ibm.cic.common.core.preferences.searchForUpdates' value='false'/>
+<preference name='com.ibm.cic.agent.ui.displayInternalVersion' value='false'/>
+<preference name='com.ibm.cic.common.sharedUI.showErrorLog' value='true'/>
+<preference name='com.ibm.cic.common.sharedUI.showWarningLog' value='true'/>
+<preference name='com.ibm.cic.common.sharedUI.showNoteLog' value='true'/>
+</agent-input>

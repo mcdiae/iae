@@ -1,0 +1,1 @@
+Simple project demonstrating how to abstract away java.io.Console issues

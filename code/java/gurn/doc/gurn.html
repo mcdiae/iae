@@ -1,0 +1,386 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Gurning Faces</title>
+</head>
+<body>
+
+<h1>Gurning Faces (alpha-level code)</h1>
+
+<p>Gurning Faces is JSF API that provides components with a little
+more flexibility in their output than standard controls.</p>
+
+<h2>Features</h2>
+
+<ul>
+	<li>Controls can emit any element; nothing is restricted to a tag.</li>
+	<li>Controls can emit any attribute; no problems adding any
+	attribute that your browser or scripting framework supports.</li>
+	<li>Template control that allows embedding of EL expressions in
+	the body.</li>
+</ul>
+
+<h2>Prerequisites and Limitations</h2>
+
+<p>The primary targets are: JSP 2.0; JSF 1.1; Java 5.</p>
+
+<p>JSP 2.0 and JSF 1.1 predate the Unified Expression Language and
+the greater integration that came with JSP 2.1 and JSF 1.2. In JSP 2.0,
+deferred expressions (of the form <code>#{foo}</code>) are allowed
+within template text and are treated as strings. In JSP 2.1 and above,
+these must be escaped (as <code>\#{foo}</code>.) Expression Language
+functions are not allowed in JSF 1.1 deferred expressions;
+single-argument functions can be hacked into being using EL map support.</p>
+
+<p>Cursory testing has been performed on an embedded Jetty server;
+this code is not production ready.</p>
+
+<p>Facelets are not supported.</p>
+
+<h2>Managed Beans</h2>
+
+<h3>gurn</h3>
+
+<p>A set of ""functions" are provided via a managed bean, exploiting
+the map support within EL. They can be invoked as follows:</p>
+
+<pre>#{gurn.functionName[argument]}</pre>
+
+<table border="1">
+	<tr>
+		<th>Function Name</th>
+		<th>Argument Type</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>actionUrl</td>
+		<td>java.lang.String</td>
+		<td>See <a
+			href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1/docs/api/javax/faces/context/ExternalContext.html#encodeActionURL%28java.lang.String%29">ExternalContext.encodeActionURL</a></td>
+	</tr>
+	<tr>
+		<td>resourceUrl</td>
+		<td>java.lang.String</td>
+		<td>See <a
+			href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1/docs/api/javax/faces/context/ExternalContext.html#encodeResourceURL%28java.lang.String%29">ExternalContext.encodeResourceURL</a></td>
+	</tr>
+	<tr>
+		<td>namespace</td>
+		<td>java.lang.String</td>
+		<td>See <a
+			href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1/docs/api/javax/faces/context/ExternalContext.html#encodeNamespace%28java.lang.String%29">ExternalContext.encodeNamespace</a></td>
+	</tr>
+	<tr>
+		<td>clientId</td>
+		<td>javax.faces.component.UIComponent</td>
+		<td>Returns the client identifier of the component passed as an
+		argument. This is the id emitted to the browser. See <a
+			href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1/docs/api/javax/faces/component/UIComponent.html#getClientId%28javax.faces.context.FacesContext%29">UIComponent.clientId</a>.
+		</td>
+	</tr>
+	<tr>
+		<td>isUserInRole</td>
+		<td>java.lang.String</td>
+		<td>See <a
+			href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1/docs/api/javax/faces/context/ExternalContext.html#isUserInRole%28java.lang.String%29">ExternalContext.isUserInRole</a></td>
+	</tr>
+	<tr>
+		<td>xml</td>
+		<td>java.lang.String</td>
+		<td>Escapes ampersands, quotes, apostrophes and the less-than and
+		greater-than signs.</td>
+	</tr>
+	<tr>
+		<td>jsString</td>
+		<td>java.lang.String</td>
+		<td>Escapes as per ECMAScript script literals.</td>
+	</tr>
+	<tr>
+		<td>safeId</td>
+		<td>java.lang.String</td>
+		<td>Uses a consistent transformation algorithm to turn any string
+		into an identifier consisting only of A-Z, a-z, 0-9 and the
+		underscore. The identifier will always start with a letter.</td>
+	</tr>
+</table>
+
+<h3>components</h3>
+
+<p>This is a request-scoped managed bean for supporting component
+binding. Components must be namespaced to the view. The bean uses the
+view identifier to prevent id collisions causing components to migrate
+from one view to another during navigation.</p>
+
+<p>Components can be bound using their binding attribute:</p>
+
+<pre>binding="#{components.someIdentifier}"</pre>
+
+<p>They can then be referred to elsewhere in the view using the same
+expression (e.g. <code>#{components.someIdentifier}</code>.)</p>
+
+<h2>Components</h2>
+
+<p>Controls are in the <code>http://gurn/alpha</code> TLD namespace.</p>
+
+<p>Suggested taglib import:</p>
+
+<pre>&lt;%@taglib prefix="g" uri="http://gurn/alpha"%&gt;</pre>
+
+<p>All attributes except those with a <code>jsf-</code> prefix are
+treated as pass-through and will be emitted to the client. Any attribute
+prefixed with <code>jsf-</code> will be bound to the control as a JSF
+attribute.</p>
+
+<p>If an <code>id</code> attribute is set, it will also be emitted
+without any context namespacing. The <code>jsf-id</code> attribute must
+be used to set the component identifier. If both are set, the <code>id</code>
+attribute will be emitted to the client.</p>
+
+<p>All components support the following attributes:</p>
+
+<table border="1">
+	<tr>
+		<th>Attribute</th>
+		<th>Type</th>
+		<th>EL Allowed</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>jsf-id</td>
+		<td>java.lang.String</td>
+		<td>no</td>
+		<td>The client identifier</td>
+	</tr>
+	<tr>
+		<td>jsf-rendered</td>
+		<td>boolean</td>
+		<td>yes</td>
+		<td>Determines if the component is rendered</td>
+	</tr>
+	<tr>
+		<td>jsf-binding</td>
+		<td>value binding</td>
+		<td>yes</td>
+		<td>Where to bind the component during view restore; or, where to
+		provision the component from</td>
+	</tr>
+	<tr>
+		<td>jsf-tag</td>
+		<td>java.lang.String</td>
+		<td>yes</td>
+		<td>The tag element to emit; if not set, no element is emitted</td>
+	</tr>
+	<!-- tr>
+		<td>jsf-dynamicAttributes</td>
+		<td>java.util.Map&lt;String,String&gt;</td>
+		<td>required</td>
+		<td>The attributes to be emitted on the tag element; this map
+		overrides any other attributes set on the component</td>
+	</tr -->
+</table>
+
+<h3>panel</h3>
+
+<p>Similar to a <code>panelGroup</code>; see <a
+	href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1/docs/api/javax/faces/component/UIPanel.html">UIPanel</a>.</p>
+
+<p>Example usage:</p>
+
+<pre>&lt;g:panel jsf-tag="span" jsf-id="foo" class="bar"&gt;baz&lt;/g:panel&gt;</pre>
+
+<p>Resultant markup:</p>
+
+<pre>&lt;span id="foo" class="bar"&gt;baz&lt;/span&gt;</pre>
+
+<h3>command</h3>
+
+<p>Similar to a <code>commandButton</code>; see <a
+	href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1/docs/api/javax/faces/component/UICommand.html">UICommand</a>.</p>
+
+<p>Example usage:</p>
+
+<pre>
+&lt;g:command jsf-id=&quot;cmd&quot; jsf-tag=&quot;input&quot;
+  jsf-action=&quot;#{testAction.printOk}&quot; jsf-binding=&quot;#{components.cmd}&quot;
+  name=&quot;#{components.cmd.clientId}&quot; type=&quot;submit&quot; value=&quot;click me&quot; /&gt;
+</pre>
+
+<p>Resultant markup:</p>
+
+<pre>
+&lt;input id=&quot;frm:cmd&quot; name=&quot;frm:cmd&quot; value=&quot;click me&quot; type=&quot;submit&quot;&gt;&lt;/input&gt;
+</pre>
+
+<table border="1">
+	<tr>
+		<th>Attribute</th>
+		<th>Type</th>
+		<th>EL Allowed</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>jsf-action</td>
+		<td>method binding or java.lang.String</td>
+		<td>yes</td>
+		<td>An expression must evaluate to a no-arg method that returns a
+		string; if a string literal is provided, it is used as a navigation
+		outcome</td>
+	</tr>
+	<tr>
+		<td>jsf-actionListener</td>
+		<td>method binding</td>
+		<td>yes</td>
+		<td>Expression that evaluates to a method that returns void and
+		takes an ActionEvent as an argument</td>
+	</tr>
+	<tr>
+		<td>jsf-on</td>
+		<td>java.lang.Boolean</td>
+		<td>yes</td>
+		<td>An expression that must evaluate to a boolean; if it
+		evaluates to true in the decode phase, an ActionEvent is raised</td>
+	</tr>
+</table>
+
+<h3>input</h3>
+
+<p>Similar to a <code>inputText</code>; see <a
+	href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1/docs/api/javax/faces/component/UIInput.html">UIInput</a>.</p>
+
+<p>Example usage:</p>
+
+<pre>
+&lt;g:input jsf-id=&quot;in&quot; jsf-tag=&quot;input&quot;
+  jsf-valueChangeListener=&quot;#{testValue.change}&quot; jsf-binding=&quot;#{components.in}&quot;
+  name=&quot;#{components.in.clientId}&quot; type=&quot;text&quot; placeholder=&quot;Type something&quot;
+  jsf-value=&quot;#{testValue.foo}&quot; value=&quot;#{testValue.foo}&quot; /&gt;
+</pre>
+
+<p>Resultant markup:</p>
+
+<pre>
+&lt;input id=&quot;frm:in&quot; placeholder=&quot;Type something&quot; name=&quot;frm:in&quot; value=&quot;&quot; type=&quot;text&quot;&gt;&lt;/input&gt;
+</pre>
+
+<table border="1">
+	<tr>
+		<th>Attribute</th>
+		<th>Type</th>
+		<th>EL Allowed</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>jsf-value</td>
+		<td>expression</td>
+		<td>yes</td>
+		<td>An expression that can evaluate to the component value.</td>
+	</tr>
+	<tr>
+		<td>jsf-in</td>
+		<td>expression</td>
+		<td>yes</td>
+		<td>An expression that can evaluate to the input value submitted
+		from the client. This value is generally read from the request
+		parameters.</td>
+	</tr>
+	<tr>
+		<td>jsf-defaultParam</td>
+		<td>boolean</td>
+		<td>yes</td>
+		<td>If a jsf-in expression is <em>not</em> set, the input
+		component will use its <a
+			href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1/docs/api/javax/faces/component/UIComponent.html#getClientId%28javax.faces.context.FacesContext%29">client
+		identifier</a> as a key and take the value from the parameter map. Set
+		jsf-defaultParam to false to disable this default behaviour.</td>
+	</tr>
+</table>
+
+<h3>template</h3>
+
+<p>Similar to the <a
+	href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1_01/docs/tlddocs/f/verbatim.html">verbatim</a>
+tag. Any deferred expressions within the body will be evaluated.</p>
+
+<p>Example usage:</p>
+
+<pre>
+&lt;g:template jsf-tag=&quot;span&quot;&gt;5 + 3 = #{5 + 3}&lt;/g:template&gt;
+</pre>
+
+<p>Resultant markup:</p>
+
+<pre>
+&lt;span id=&quot;_id0&quot;&gt;5 + 3 = 8&lt;/span&gt;
+</pre>
+
+<table border="1">
+	<tr>
+		<th>Attribute</th>
+		<th>Type</th>
+		<th>EL Allowed</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>jsf-escape</td>
+		<td>java.lang.Boolean</td>
+		<td>yes</td>
+		<td>Defaults to true. If true, templatable text will be</td>
+	</tr>
+</table>
+
+<h3>repeat</h3>
+
+<p>Similar to the <a
+	href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1_01/docs/tlddocs/h/dataTable.html">dataTable</a>
+tag. Also see <a
+	href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1/docs/api/javax/faces/component/UIData.html">UIData</a>.
+Any children of the control will be rendered for every row in the <a
+	href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1/docs/api/javax/faces/model/DataModel.html">model</a>.
+No facets are supported.</p>
+
+<p>Example usage:</p>
+
+<pre>
+&lt;g:repeat jsf-tag=&quot;span&quot; jsf-id=&quot;foo&quot; jsf-value=&quot;#{testList.list}&quot;
+    jsf-var=&quot;row&quot;&gt;
+  &lt;h:commandButton value=&quot;#{row.value}&quot; action=&quot;#{row.printValue}&quot; /&gt;
+&lt;/g:repeat&gt;
+</pre>
+
+<p>Resultant markup:</p>
+
+<pre>
+&lt;span id=&quot;form1:foo&quot;&gt;
+&lt;input type=&quot;submit&quot; name=&quot;form1:foo:0:_id0&quot; value=&quot;row 0&quot; onclick=&quot;clearFormHiddenParams_form1(this.form.id);&quot; /&gt;
+&lt;input type=&quot;submit&quot; name=&quot;form1:foo:1:_id0&quot; value=&quot;row 1&quot; onclick=&quot;clearFormHiddenParams_form1(this.form.id);&quot; /&gt;
+&lt;input type=&quot;submit&quot; name=&quot;form1:foo:2:_id0&quot; value=&quot;row 2&quot; onclick=&quot;clearFormHiddenParams_form1(this.form.id);&quot; /&gt;
+&lt;/span&gt;
+</pre>
+
+<p><em>Note: line breaks inserted for clarity.</em></p>
+
+<table border="1">
+	<tr>
+		<th>Attribute</th>
+		<th>Type</th>
+		<th>EL Allowed</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>jsf-value</td>
+		<td>expression</td>
+		<td>yes</td>
+		<td>The component <a
+			href="http://download.oracle.com/docs/cd/E17802_01/j2ee/j2ee/javaserverfaces/1.1/docs/api/javax/faces/component/UIData.html#getValue%28%29">value</a>.</td>
+	</tr>
+	<tr>
+		<td>jsf-var</td>
+		<td>java.lang.String</td>
+		<td>yes</td>
+		<td>Request scope row attribute name.</td>
+	</tr>
+</table>
+
+</body>
+</html>

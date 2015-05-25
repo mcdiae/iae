@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright (c) 2008 McDowell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+	
+<project name="boilerplate" default="default" basedir=".">
+
+	<property name="dir.build" value="build" />
+	<property name="dir.build.bin" value="build/bin" />
+
+	<property name="dir.runtime.classes" value="${dir.build}/classes-runtime" />
+	<property name="dir.runtime.src" value="../boilerplate/src" />
+	<property name="runtime.jar" value="${dir.build.bin}/boilerplate.jar" />
+
+	<property name="dir.processor.classes" value="${dir.build}/classes-processor" />
+	<property name="dir.processor.src" value="../boilerplateProcessor/src" />
+	<property name="processor.jar" value="${dir.build.bin}/bpc.jar" />
+
+	<property name="dir.test.classes" value="${dir.build}/classes-test" />
+	<property name="dir.test.src" value="../boilerplateTest/test-code" />
+	<property name="dir.test.junit" value="../boilerplateTest/junit" />
+	
+	<property name="dir.doc" value="${dir.build}/doc" />
+
+	<import file="build_deps.xml" />
+
+	<target name="default" depends="test,javadoc" />
+
+	<target name="compile" depends="DEPS.default,clean">
+		<mkdir dir="${dir.runtime.classes}" />
+		<javac srcdir="${dir.runtime.src}" destdir="${dir.runtime.classes}" />
+
+		<mkdir dir="${dir.processor.classes}" />
+		<javac srcdir="${dir.processor.src}" destdir="${dir.processor.classes}">
+			<classpath>
+				<dirset dir="${dir.runtime.classes}" />
+				<fileset file="${asm.jar}" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="build" depends="compile">
+		<mkdir dir="${dir.build.bin}" />
+
+		<jar destfile="${runtime.jar}">
+			<fileset dir="${dir.runtime.classes}" />
+			<fileset dir="${dir.runtime.src}" excludes="**/*.java" />
+		</jar>
+
+		<jar destfile="${processor.jar}" manifest="${dir.processor.src}/META-INF/MANIFEST.MF">
+			<fileset dir="${dir.processor.classes}" />
+			<fileset dir="${dir.processor.src}" excludes="**/*.java" />
+		</jar>
+
+		<copy file="${asm.jar}" todir="${dir.build.bin}" />
+	</target>
+
+	<target name="test" depends="build">
+		<!-- compile the tests -->
+		<mkdir dir="${dir.test.classes}" />
+		<javac srcdir="${dir.test.src}" destdir="${dir.test.classes}">
+			<classpath>
+				<fileset file="${runtime.jar}" />
+				<fileset file="${junit.jar}" />
+			</classpath>
+		</javac>
+		<javac srcdir="${dir.test.junit}" destdir="${dir.test.classes}">
+			<classpath>
+				<fileset file="${runtime.jar}" />
+				<fileset file="${junit.jar}" />
+				<fileset dir="${dir.test.classes}" />
+			</classpath>
+		</javac>
+
+		<!-- run the processor on the classes -->
+		<java jar="${processor.jar}" fork="true" failonerror="true">
+			<classpath>
+				<fileset file="${runtime.jar}" />
+				<fileset file="${bpc.jar}" />
+				<fileset file="${asm.jar}" />
+			</classpath>
+			<arg path="${dir.test.classes}" />
+		</java>
+
+		<!-- run junit -->
+		<java classname="org.junit.runner.JUnitCore" fork="true" failonerror="true">
+			<classpath>
+				<fileset file="${runtime.jar}" />
+				<fileset file="${junit.jar}" />
+				<dirset dir="${dir.test.classes}" />
+			</classpath>
+			<arg value="boilerplate.test.TestSuite" />
+		</java>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${dir.build}" />
+		<mkdir dir="${dir.build}"/>
+	</target>
+
+	<target name="javadoc">
+		<javadoc destdir="${dir.doc}">
+		    <fileset dir="${dir.runtime.src}" />
+			<fileset dir="${dir.processor.src}">
+				<exclude name="META-INF/**" />
+			</fileset>
+			<!-- fileset dir="${dir.test.src}" / -->
+			<!-- fileset dir="${dir.test.junit}" / -->
+			
+			<classpath>
+				<fileset file="${asm.jar}" />
+				<!-- fileset file="${junit.jar}" / -->
+			</classpath>
+			
+			<doctitle><![CDATA[
+				<h1>Boilerplate</h1>
+				]]></doctitle>
+			<bottom><![CDATA[
+				<h4><a href="http://code.google.com/p/illegalargumentexception/">Boilerplate</a></h4>
+				<p>An API and processor for automatic implementation of equals,
+				hashCode and toString methods on Java classes.</p>
+				<p>(c) McDowell</p>
+				]]></bottom>
+			<group title="Runtime Classes" packages="boilerplate.equals*:boilerplate.tostring*"/>
+			<group title="Tooling Classes" packages="boilerplate.processor*"/>
+			<!-- group title="Test Classes" packages="boilerplate.test*"/ -->
+		</javadoc>
+	</target>
+	
+</project>

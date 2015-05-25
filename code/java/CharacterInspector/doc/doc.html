@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Character Inspector documentation</title>
+</head>
+<body>
+
+<h1>Character Inspector</h1>
+
+<h4>Purpose</h4>
+
+<p>To discover character identity and display other information.</p>
+
+<h4>Usage</h4>
+
+<pre>java -jar charinspect.jar</pre>
+
+<h4>Prerequisites</h4>
+
+<p>Java 5 (1.5) or above.</p>
+
+<h4>Mode: GLYPHS</h4>
+
+<p>Input: any character sequence.</p>
+
+<p>This mode will display basic information on the characters,
+including the Unicode codepoint, the rendered glyph (if it can be
+rendered) the escape sequence that can be used in Java files, the
+encoded byte sequence for the chosen encoding and additional info (the
+Unicode block and character type).</p>
+
+<h4>Mode: CODEPOINT</h4>
+
+<p>Input: a single codepoint as a hexadecimal number.</p>
+
+<p>This mode will display information on a single codepoint,
+including the encodings available that the character can be encoded
+with. If the codepoint is a lower case or upper case letter, information
+on the alternate case will be displayed.</p>
+
+<h4>Mode: DECODE</h4>
+
+<p>Input: a hexadecimal byte sequence of any length (a single byte
+requires two nibble hex digits).</p>
+
+<p>This mode decodes a hexadecimal representation of a byte sequence
+using the selected encoding and displays information on the resultant
+string as per GLYPHS mode.</p>
+
+<h4>Interface</h4>
+
+<img src="screenshot.png" />
+
+<ol>
+  <li>Mode selection.</li>
+  <li>Input field. How input is interpreted depends on the mode.</li>
+  <li>Encoding selection. In decode mode, this encoding is used to
+  decode the bytes; in other modes, it is used to encode the example
+  characters.</li>
+  <li>The output pane.</li>
+  <li>The characters expressed as <a
+    href="http://unicode.org/charts/">Unicode code points</a>.</li>
+  <li>The characters rendered as glyphs (if that is possible, given
+  character and font limitations).</li>
+  <li>Characters expressed in Unicode escape sequences that can be
+  used in Java String/char literals.</li>
+  <li>The characters, encoded to bytes using the chosen encoding.</li>
+  <li>Additional information on the characters.</li>
+</ol>
+
+<img src="screenshot2.png" />
+
+<ol>
+  <li>A Unicode codepoint.</li>
+  <li>The encodings that contain the character.</li>
+  <li>If the codepoint is a letter, information on the upper-case
+  forms and which locales use that form. <em>(Case transformations
+  may be a one-way process.)</em></li>
+</ol>
+
+</body>
+</html>

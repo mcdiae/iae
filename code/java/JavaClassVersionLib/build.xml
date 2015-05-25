@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="JavaClassVersion" default="default" basedir=".">
+	<description>
+            Project Ant build file
+    </description>
+
+	<!-- properties -->
+	
+	<property name="dir_dependencies" value="${basedir}/dependencies" />
+	<property name="dir.build" value="${basedir}/build" />
+	<property name="dir.build.bin" value="${basedir}/build/bin" />
+
+	<property name="dir.runtime.classes" value="${dir.build}/classes" />
+	<property name="dir.runtime.src" value="${basedir}/src" />
+	<property name="dir.demo.src" value="${basedir}/demo" />
+	<property name="dir.demo.classes" value="${dir.build}/demo_classes" />
+	<property name="dir.gui.src" value="${basedir}/src-gui" />
+	<property name="dir.gui.classes" value="${dir.build}/gui_classes" />
+
+	<property name="runtime.jar" value="${basedir}/build/bin/classver_1.1.jar" />
+	<property name="zipfile" value="${basedir}/build/javaClassVersionLib_1.1.zip" />
+	
+	<property name="dir.doc" value="${dir.build}/doc" />
+	<property name="dir.javadoc" value="${dir.doc}/javadoc" />
+	
+	<!-- targets -->
+	
+	<target name="default" depends="kit,rundemos" />
+
+	<target name="compile" depends="clean">
+		<!-- compile -->
+		<mkdir dir="${dir.runtime.classes}" />
+		<javac srcdir="${dir.runtime.src}" destdir="${dir.runtime.classes}" fork="true" debug="on" target="1.4" source="1.4" />
+		<mkdir dir="${dir.gui.classes}" />
+		<javac srcdir="${dir.gui.src}" destdir="${dir.gui.classes}" fork="true" debug="on" target="1.4" source="1.4">
+			<classpath>
+				<dirset dir="${dir.runtime.classes}" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="build" depends="compile">
+		<!-- build jar -->
+		<mkdir dir="${dir.build.bin}" />
+		<jar destfile="${runtime.jar}" manifest="${dir.gui.src}/META-INF/MANIFEST.MF">
+			<fileset dir="${dir.runtime.classes}" />
+			<fileset dir="${dir.runtime.src}" />
+			<fileset dir="${dir.gui.classes}" />
+			<fileset dir="${dir.gui.src}" />
+		</jar>
+	</target>
+
+	<target name="kit" depends="build,doc">
+		<zip destfile="${zipfile}">
+			<fileset file="${runtime.jar}" />
+			<fileset file="${basedir}/LICENSE.TXT" />
+			<fileset file="${basedir}/README.TXT" />
+			<fileset dir="${basedir}/demo" />
+			<fileset dir="${dir.doc}" />
+		</zip>
+	</target>
+
+	<target name="rundemos" depends="compile">
+		<mkdir dir="${dir.demo.classes}" />
+		<javac srcdir="${dir.demo.src}" destdir="${dir.demo.classes}" fork="true" debug="on" target="1.4" source="1.4">
+			<classpath>
+				<dirset dir="${dir.runtime.classes}" />
+			</classpath>
+		</javac>
+		<java fork="true" classname="demo.ClassVersionPrinter" classpath="${runtime.jar}:${dir.demo.classes}" failonerror="true">
+			<arg value="${dir.demo.classes}" />
+			<arg value="${runtime.jar}" />
+		</java>
+		<java fork="true" classname="demo.JavaVersionPrinter" classpath="${runtime.jar}:${dir.demo.classes}" failonerror="true">
+			<arg value="${dir.demo.classes}" />
+			<arg value="${runtime.jar}" />
+		</java>
+	</target>
+
+	<target name="doc">
+		<javadoc sourcepath="${dir.runtime.src}" destdir="${dir.javadoc}" windowtitle="JavaClassVersionLib">
+			<bottom><![CDATA[<a href="http://illegalargumentexception.blogspot.com/">blog</a> | <a href="http://code.google.com/p/illegalargumentexception/">source code</a>]]></bottom>
+		</javadoc>
+	</target>
+	
+	<target name="clean">
+		<!-- clean -->
+		<delete dir="${dir.build}" />
+	</target>
+
+</project>

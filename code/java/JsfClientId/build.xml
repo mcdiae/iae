@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright (c) 2009 McDowell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+
+<project name="clientIdFunctions" default="kit" basedir=".">
+	<description>
+        Builds clientId.jar
+    	
+    	See build.properties for required properties
+    </description>
+
+	<property file="build.properties" />
+	<import file="scripts/build_deps.xml" />
+
+	<target name="kit" depends="build,doc">
+		<mkdir dir="kit" />
+		<zip destfile="kit/clientId_${version}.zip">
+			<zipfileset prefix="src" dir="src" />
+			<zipfileset file="build/clientId_${version}.jar" />
+			<zipfileset file="README.TXT" />
+			<zipfileset file="LICENSE.TXT" />
+			<zipfileset dir="build/doc" />
+		</zip>
+	</target>
+
+	<target name="build" depends="cleanbld,DEPS.downloadjsf,DEPS.downloadel">
+		<mkdir dir="build/classes" />
+
+		<manifest file="build/MANIFEST.MF">
+			<attribute name="Implementation-Title" value="ClientIdUtils" />
+			<attribute name="Implementation-Vendor" value="McDowell" />
+			<attribute name="Implementation-Version" value="${version}" />
+			<attribute name="Implementation-URL" value="http://illegalargumentexception.blogspot.com/2009/02/jsf-working-with-component-ids.html" />
+		</manifest>
+
+		<echo message="Classpath=${jsf.jar}:${el.jar}" />
+		<javac srcdir="./src" destdir="build/classes" target="1.5" debug="on">
+			<classpath path="${jsf.jar}:${el.jar}" />
+		</javac>
+
+		<echo message="Generating Facelets descriptor" />
+		<xslt style="scripts/facelettaglib.xslt" in="scripts/faceletsrc.xml" out="build/facelets/META-INF/clientid.taglib.xml" />
+
+		<jar destfile="build/clientId_${version}.jar" manifest="build/MANIFEST.MF">
+			<fileset dir="build/classes" />
+			<fileset dir="src" />
+			<fileset dir="build/facelets" />
+		</jar>
+	</target>
+
+	<target name="doc">
+		<xslt style="scripts/tagdoc.xslt" in="src/META-INF/clientid.tld" out="build/doc/taglibrary.html" />
+		<javadoc destdir="build/doc/javadoc" classpath="${jsf.jar}:${el.jar}">
+			<packageset dir="src">
+				<exclude name="demo/faces/cache/**" />
+			</packageset>
+			<link href="http://java.sun.com/javaee/5/docs/api/" />
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+		</javadoc>
+		<copy file="doc/index.html" todir="build/doc" />
+		<copy file="doc/style.css" todir="build/doc" />
+	</target>
+
+	<target name="cleanbld">
+		<delete dir="build" />
+	</target>
+
+	<target name="clean" depends="cleanbld">
+		<delete dir="dependencies" />
+		<delete dir="kit" />
+	</target>
+
+</project>

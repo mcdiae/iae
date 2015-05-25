@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright (c) 2009 McDowell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+
+<project name="Ejb3Basics" default="main" basedir=".">
+  <description>
+
+  </description>
+
+  <import file="scripts/build_deps.xml" />
+
+  <target name="main"
+          depends="cleanbld,buildInterfaces,buildEjb,buildClient,buildEAR" />
+
+  <target name="buildInterfaces" depends="DEPS.downloadOpenEjb">
+    <mkdir dir="build/classes-interfaces" />
+
+    <manifest file="build/INTERFACES.MF">
+      <attribute name="Implementation-Title"
+                 value="Ejb3Basics Interfaces" />
+      <attribute name="Implementation-Vendor" value="McDowell" />
+      <attribute name="Implementation-Version" value="1.0" />
+      <attribute name="Implementation-URL"
+                 value="http://illegalargumentexception.blogspot.com" />
+    </manifest>
+
+    <echo message="${openejb.jar}" />
+    <javac srcdir="./src-interfaces"
+           destdir="build/classes-interfaces"
+           debug="on">
+      <classpath path="${openejb.jar}" />
+    </javac>
+
+    <mkdir dir="build/bin/ejb" />
+    <jar destfile="build/bin/ejb/interfaces.jar"
+         manifest="build/INTERFACES.MF">
+      <fileset dir="build/classes-interfaces" />
+      <fileset dir="src-interfaces" />
+    </jar>
+  </target>
+
+  <target name="buildEjb"
+          depends="DEPS.downloadOpenEjb,buildInterfaces">
+    <mkdir dir="build/classes-ejb" />
+
+    <manifest file="build/BEANS.MF">
+      <attribute name="Class-Path" value="interfaces.jar" />
+      <attribute name="Implementation-Title" value="Ejb3Basics Beans" />
+      <attribute name="Implementation-Vendor" value="McDowell" />
+      <attribute name="Implementation-Version" value="1.0" />
+      <attribute name="Implementation-URL"
+                 value="http://illegalargumentexception.blogspot.com" />
+    </manifest>
+
+    <javac srcdir="./src-ejb" destdir="build/classes-ejb" debug="on">
+      <classpath path="${openejb.jar}:build/bin/ejb/interfaces.jar" />
+    </javac>
+
+    <mkdir dir="build/bin/ejb" />
+    <jar destfile="build/bin/ejb/ejb.jar" manifest="build/BEANS.MF">
+      <fileset dir="build/classes-ejb" />
+      <fileset dir="src-ejb" />
+    </jar>
+  </target>
+
+  <target name="buildClient"
+          depends="DEPS.downloadOpenEjb,buildInterfaces">
+    <mkdir dir="build/classes-client" />
+
+    <manifest file="build/CLIENT.MF">
+      <attribute name="Class-Path" value="interfaces.jar" />
+      <attribute name="Implementation-Title"
+                 value="Ejb3Basics Client" />
+      <attribute name="Implementation-Vendor" value="McDowell" />
+      <attribute name="Implementation-Version" value="1.0" />
+      <attribute name="Implementation-URL"
+                 value="http://illegalargumentexception.blogspot.com" />
+    </manifest>
+
+    <copy file="build/bin/ejb/interfaces.jar"
+          todir="build/bin/client/" />
+    <javac srcdir="./src-client"
+           destdir="build/classes-client"
+           debug="on">
+      <classpath path="${openejb.jar}:build/bin/client/interfaces.jar" />
+    </javac>
+
+    <mkdir dir="build/bin/ejb" />
+    <jar destfile="build/bin/client/client.jar"
+         manifest="build/CLIENT.MF">
+      <fileset dir="build/classes-client" />
+      <fileset dir="src-client" />
+    </jar>
+  </target>
+
+  <target name="buildEAR" depends="buildEjb">
+    <jar destfile="build/countCharactersEAR.ear">
+      <fileset dir="build/bin/ejb" />
+      <fileset dir="scripts/ear" />
+    </jar>
+  </target>
+
+  <target name="cleanbld">
+    <delete dir="build" />
+  </target>
+
+  <target name="clean" depends="cleanbld">
+    <delete dir="dependencies" />
+  </target>
+
+</project>

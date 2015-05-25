@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+  <!--
+    Copyright (c) 2009 McDowell Permission is hereby granted, free of
+    charge, to any person obtaining a copy of this software and
+    associated documentation files (the "Software"), to deal in the
+    Software without restriction, including without limitation the
+    rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom
+    the Software is furnished to do so, subject to the following
+    conditions: The above copyright notice and this permission notice
+    shall be included in all copies or substantial portions of the
+    Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+    KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+    BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+    ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+  -->
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+  version="2.1">
+
+  <description>
+    This tag library provides utility methods for working
+    with JSF components.
+    </description>
+  <display-name>JSF clientId functions</display-name>
+  <tlib-version>2.0</tlib-version>
+  <short-name>id</short-name>
+  <uri>
+    http://illegalargumentexception.googlecode.com/clientId
+  </uri>
+
+  <function>
+    <description>Returns clientId value of the given component.
+      This value is used as the basis for id values in the target markup
+      (e.g. in the rendered HTML of an inputText control, the 'input'
+      element would use the clientId in its 'id' and 'name' attributes).
+    </description>
+    <name>cid</name>
+    <function-class>demo.faces.function.IdFunction
+    </function-class>
+    <function-signature>javax.faces.component.UIComponent
+      cid(javax.faces.component.UIComponent)
+    </function-signature>
+    <example>
+<![CDATA[
+<h:outputText value="click me" binding="#{bean.foo}"
+ onclick="alert('id on client is #{id:cid(bean.foo)}');" />
+]]>
+    </example>
+    <function-extension>
+      <param name="component" type="javax.faces.component.UIComponent"
+        description="the component whose clientId is required" />
+      <return type="java.lang.String"
+        description="the clientId, usually in the form 'form1:data1:n:text1'" />
+    </function-extension>
+  </function>
+
+  <function>
+    <description>Returns the closest ancestor of the component with the
+      given id.</description>
+    <name>ancestor</name>
+    <function-class>demo.faces.function.IdFunction
+    </function-class>
+    <function-signature>javax.faces.component.UIComponent
+      ancestor(javax.faces.component.UIComponent,
+      java.lang.String)
+    </function-signature>
+    <example>
+<![CDATA[
+...tag hierarchy...
+<h:form id="form1">
+  <h:panelGroup>
+    <h:inputText binding="#{bean.foo}" />
+  </h:panelGroup>
+</h:form>
+
+...expression to retrieve the form component...
+#{id:ancestor(bean.foo, 'form1')}
+]]>
+    </example>
+    <function-extension>
+      <param name="component" type="javax.faces.component.UIComponent"
+        description="the component whose ancestor is required" />
+      <param name="id" type="java.lang.String" description="the id of the ancestor" />
+      <return type="javax.faces.component.UIComponent"
+        description="the ancestor component" />
+    </function-extension>
+  </function>
+
+  <function>
+    <description>Returns the container of the component with the
+      given id (the nearest ancestor of type NamingContainer or the
+      UIViewRoot).</description>
+    <name>container</name>
+    <function-class>demo.faces.function.IdFunction
+    </function-class>
+    <function-signature>javax.faces.component.UIComponent
+      container(javax.faces.component.UIComponent)
+    </function-signature>
+    <example>
+<![CDATA[
+...tag hierarchy...
+<h:form id="form1">
+  <h:panelGroup>
+    <h:inputText binding="#{bean.foo}" />
+  </h:panelGroup>
+</h:form>
+
+...expression to retrieve the form component...
+#{id:container(bean.foo)}
+]]>
+    </example>
+    <function-extension>
+      <param name="component" type="javax.faces.component.UIComponent"
+        description="the component whose container is required" />
+      <return type="javax.faces.component.UIComponent"
+        description="the container component" />
+    </function-extension>
+  </function>
+
+  <function>
+    <description>Finds the component with the
+      given id (relative to
+      the given component). If the given component is a NamingContainer,
+      it will be searched for a child with the given id.
+      If the given
+      component is NOT a NamingContainer, function "container" will be
+      called and that container will be searched for a child with the
+      given id.</description>
+    <name>find</name>
+    <function-class>demo.faces.function.IdFunction
+    </function-class>
+    <function-signature>javax.faces.component.UIComponent
+      find(javax.faces.component.UIComponent,
+      java.lang.String)
+    </function-signature>
+    <example>
+<![CDATA[
+...tag hierarchy...
+<h:form id="form1">
+  <h:panelGroup id="x">
+    <h:inputText binding="#{bean.foo}" />
+  </h:panelGroup>
+</h:form>
+
+...expression to retrieve the 'x' component...
+#{id:find(bean.foo, 'x')}
+]]>
+    </example>
+    <function-extension>
+      <param name="component" type="javax.faces.component.UIComponent"
+        description="a container or a component in the same container" />
+      <param name="id" type="java.lang.String" description="the id of the component to find" />
+      <return type="javax.faces.component.UIComponent"
+        description="the component with the id" />
+    </function-extension>
+  </function>
+
+  <function>
+    <description>Finds the component with the
+      given id (relative to
+      the given component). Function "container" will be
+      called to get
+      the container of the given component. That container will be
+      searched for a child with the
+      given id.</description>
+    <name>peer</name>
+    <function-class>demo.faces.function.IdFunction
+    </function-class>
+    <function-signature>javax.faces.component.UIComponent
+      peer(javax.faces.component.UIComponent,
+      java.lang.String)
+    </function-signature>
+    <example>
+<![CDATA[
+...tag hierarchy...
+<h:form id="form1">
+  <h:panelGroup id="x">
+    <h:inputText binding="#{bean.foo}" />
+  </h:panelGroup>
+</h:form>
+
+...expression to retrieve the 'x' component...
+#{id:find(bean.foo, 'x')}
+]]>
+    </example>
+    <function-extension>
+      <param name="component" type="javax.faces.component.UIComponent"
+        description="a component in the same container" />
+      <param name="id" type="java.lang.String" description="the id of the component to find" />
+      <return type="javax.faces.component.UIComponent"
+        description="the component with the id" />
+    </function-extension>
+  </function>
+
+  <function>
+    <description>Wraps the given component in an instance of
+      "demo.faces.resolver.Resolver". This is a convenience class with
+      methods for navigating to related controls and returning the
+      clientId.
+    </description>
+    <name>resolver</name>
+    <function-class>demo.faces.function.IdFunction
+    </function-class>
+    <function-signature>javax.faces.component.UIComponent
+      resolver(javax.faces.component.UIComponent)
+    </function-signature>
+    <example>
+<![CDATA[
+...tag hierarchy...
+<h:inputText binding="#{bean.foo}" />
+
+...expression to wrap component...
+#{id:resolver(bean.foo)}
+]]>
+    </example>
+    <function-extension>
+      <param name="component" type="javax.faces.component.UIComponent"
+        description="the component to be wrapped" />
+      <return type="demo.faces.resolver.Resolver" description="the resolver" />
+    </function-extension>
+  </function>
+
+  <function>
+    <description>Returns the clientId of the component with the
+      given identifier. THIS FUNCTION IS DEPRECATED: there is a chance
+      that the wrong value will be returned if the component identifier
+      is not unique in the view; component identifiers need only be
+      unique to their NamingContainer.</description>
+    <name>clientId</name>
+    <function-class>demo.faces.ClientIdUtils
+    </function-class>
+    <function-signature>java.lang.String
+      findClientId(java.lang.String)</function-signature>
+    <function-extension>
+      <param name="id" type="java.lang.String"
+        description="the id of the component whose clientId is required" />
+      <return type="java.lang.String"
+        description="the clientId, usually in the form 'form1:data1:n:text1'" />
+    </function-extension>
+  </function>
+
+  <function>
+    <description>Returns the clientId of the component with the
+      given identifier. THIS FUNCTION IS DEPRECATED: there is a chance
+      that the wrong value will be returned if the component identifier
+      is not unique in the view; component identifiers need only be
+      unique to their NamingContainer.</description>
+    <name>cachedClientId</name>
+    <function-class>demo.faces.ClientIdUtils
+    </function-class>
+    <function-signature>java.lang.String
+      findCachedClientId(java.lang.String)</function-signature>
+    <function-extension>
+      <param name="id" type="java.lang.String"
+        description="the id of the component whose clientId is required" />
+      <return type="java.lang.String"
+        description="the clientId, usually in the form 'form1:data1:n:text1'" />
+    </function-extension>
+  </function>
+
+  <tag>
+    <description><![CDATA[A component for resolving related components in EL expressions.]]></description>
+    <name>resolver</name>
+    <tag-class>demo.faces.webapp.ComponentResolverTag
+    </tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description><![CDATA[The ID of the component.]]></description>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <description><![CDATA[The request scope variable the resolver will be set to. Within the tag, EL expressions can resolve a demo.faces.component.Resolver using this variable.]]></description>
+      <name>var</name>
+      <required>true</required>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+    </attribute>
+    <attribute>
+      <description><![CDATA[Sets whether the component does strict checking for "var" collisions. If a collision is detected, an exception will be thrown. Defaults to "true".]]></description>
+      <name>strict</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+    </attribute>
+    <example>
+<![CDATA[
+...Component hierarchy (UIForm and UIData implement NamingContainer)...
+<h:form id="form1">
+  <id:resolver var="res1">
+    <h:panelGroup id="x">
+      <h:dataTable id="table1">
+        <h:column>
+          <h:inputText id="x"
+            onclick="alert('I am id=#{res1.find.table1.find.x.clientId}')" />
+        </h:column>
+      </h:dataTable>
+    </h:panelGroup>
+  </id:resolver>
+</h:form>
+
+...Expression to get "res1" component...
+#{res1.component}
+
+...Expression to get clientId of "res1"...
+#{res1.clientId}
+
+...Expressions to get clientId of "form1"...
+#{res1.ancestor['form1'].clientId}
+#{res1.ancestor.form1.clientId}
+#{res1.parent.clientId}
+
+...Expressions to get panel component with id="x"....
+#{res1.find['x'].component}
+#{res1.peer['x'].component}
+
+...Difference between peer and find...
+#{res1.find['table1'].find['x']} ...returns resolver for text field
+#{res1.find['table1'].peer['x']} ...returns resolver for panel
+
+...Expressions are only valid within tag with var="res1"...
+]]>
+    </example>
+  </tag>
+
+</taglib>

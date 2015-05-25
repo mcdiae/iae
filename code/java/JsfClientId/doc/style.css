@@ -1,0 +1,19 @@
+@CHARSET "ISO-8859-1";
+
+BODY {
+	font-family: sans-serif; 
+}
+
+TABLE {
+	width: 100%;
+	border-style: solid;
+	border-collapse: collapse;
+}
+
+TD {
+	border-style: solid;
+}
+
+TH {
+	border-style: solid;
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://demo.iae.ws/name"
+	xmlns:tns="http://demo.iae.ws/name" elementFormDefault="qualified">	
+	<complexType name="name">
+		<sequence>
+			<element name="forename" maxOccurs="1" minOccurs="1" type="string" />
+			<element name="surname" maxOccurs="1" minOccurs="1" type="string" />
+		</sequence>
+	</complexType>
+</schema>

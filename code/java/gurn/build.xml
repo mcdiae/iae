@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="gurnBundle" default="bundle">
+    <target name="bundle">
+        <zip destfile="target/gurn-0.0.1-SNAPSHOT.zip">
+        	<fileset includes="doc/*.html" />
+        	<fileset includes="*.jar" />
+        	<fileset includes="*.TXT" />
+        </zip>
+    </target>
+</project>

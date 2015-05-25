@@ -1,0 +1,56 @@
+<html>
+<body>
+
+<p>An API for printing Java class file versions.</p>
+
+<h4>Sample Application</h4>
+
+<pre>
+import illegalargument.classversion.ClassScanner;
+import illegalargument.classversion.ClassVersion;
+
+import java.io.File;
+import java.io.IOException;
+
+/**
+ * Demo app that prints the class version of given class files.
+ * 
+ * @author McDowell
+ */
+public class ClassVersionPrinter {
+
+  /**
+   * Provide class directories, class archives and/or class files as arguments.
+   */
+  public static void main(String[] args) throws IOException {
+    if (args.length == 0) {
+      System.err
+          .println("Provide Java archives, directories and/or class files as arguments");
+      System.exit(1);
+    }
+
+    ClassScanner.Visitor visitor = new ClassScanner.Visitor() {
+      public void visitClass(File location,
+          String classFile, ClassVersion version) {
+        System.out.println(location + "\t" + classFile
+            + "\t" + version);
+      }
+    };
+
+    for (int i = 0; i < args.length; i++) {
+      try {
+        File file = new File(args[i]);
+        ClassScanner.visitTarget(file, visitor);
+      } catch (IOException e) {
+        System.err.println("Error on " + args[0]);
+        e.printStackTrace();
+        System.exit(2);
+      }
+    }
+  }
+
+}
+</pre>
+
+</body>
+</html>

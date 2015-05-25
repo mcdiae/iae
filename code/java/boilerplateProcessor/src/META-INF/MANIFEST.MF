@@ -1,0 +1,2 @@
+Main-Class: boilerplate.processor.Processor
+Class-Path: asm-all-3.1.jar boilerplate.jar

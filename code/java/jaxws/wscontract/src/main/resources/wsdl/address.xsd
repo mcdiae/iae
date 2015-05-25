@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://demo.iae.ws/address"
+	xmlns:tns="http://demo.iae.ws/address" xmlns:name="http://demo.iae.ws/name"
+	elementFormDefault="qualified">
+
+	<import namespace="http://demo.iae.ws/name" schemaLocation="name.xsd" />
+
+	<complexType name="address">
+		<sequence>
+			<element name="name" maxOccurs="1" minOccurs="1" type="name:name" />
+			<element name="location" type="string" minOccurs="1"
+				maxOccurs="unbounded" />
+			<element name="code" minOccurs="0" maxOccurs="1" type="string" />
+		</sequence>
+	</complexType>
+</schema>

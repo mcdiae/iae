@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+  version="2.1">
+  <description><![CDATA[A custom library for a format panel control.]]></description>
+  <tlib-version>1.0</tlib-version>
+  <short-name>i18n</short-name>
+  <uri>http://illegalargumentexception.googlecode.com/i18n</uri>
+  <tag>
+    <description><![CDATA[A format panel control for laying out child controls based on a resource string.]]></description>
+    <name>formatPanel</name>
+    <tag-class>illegalargument.jsf.i18n.FormatPanelTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description><![CDATA[The ID of the component.]]></description>
+      <name>id</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <description><![CDATA[A format string, probably from a resource bundle. E.g. "This is my sample {0} text." would render the child control at index==0 in place of {0}.]]></description>
+      <name>formatString</name>
+      <required>true</required>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+    </attribute>
+    <attribute>
+      <description><![CDATA[CSS style.]]></description>
+      <name>style</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+    </attribute>
+    <attribute>
+      <description><![CDATA[CSS style class.]]></description>
+      <name>styleClass</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+    </attribute>
+    <attribute>
+      <description><![CDATA[Set to false to not render component.]]></description>
+      <name>rendered</name>
+      <required>false</required>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+    </attribute>
+    <attribute>
+      <description><![CDATA[Set an expression binding to bind the component instance to a backing bean.]]></description>
+      <name>binding</name>
+      <required>false</required>
+      <deferred-value>
+        <type>javax.faces.component.UIComponent</type>
+      </deferred-value>
+    </attribute>
+    <attribute>
+      <description><![CDATA[Specifies the base direction of directionally neutral text. LTR: Left-to-right text. RTL: Right-to-left text.]]></description>
+      <name>dir</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+    </attribute>
+    <attribute>
+      <description><![CDATA[Specifies the base language of an element's attribute values and text content.]]></description>
+      <name>lang</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+    </attribute>
+    <attribute>
+      <description><![CDATA[Advisory information about the element for which it is set.]]></description>
+      <name>title</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+    </attribute>
+  </tag>
+</taglib>

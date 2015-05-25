@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:main="http://demo.iae.ws/MaintainAddress/" xmlns:name="http://demo.iae.ws/name">
+	<soapenv:Header />
+	<soapenv:Body>
+		<main:name>
+			<name:forename>DEFAULT</name:forename>
+			<name:surname>DEFAULT</name:surname>
+		</main:name>
+	</soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright (c) 2009 McDowell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+
+<project name="jsfFormatPanel" default="kit" basedir=".">
+	<description>
+        Builds formatPanelComponent_*.jar
+    </description>
+
+	<property name="version" value="1.0" />
+
+	<import file="build_deps.xml" />
+
+	<target name="kit" depends="build,documentation">
+		<zip destfile="jsfFormatPanel_${version}.zip">
+			<zipfileset prefix="src" dir="src" />
+			<zipfileset file="build/formatPanelComponent_${version}.jar" />
+			<zipfileset file="README.TXT" />
+			<zipfileset file="LICENSE.TXT" />
+			<zipfileset file="build/tagdoc_i18n.html" />
+		</zip>
+	</target>
+
+	<target name="build" depends="clean,DEPS.downloadjsf,DEPS.downloadel">
+		<mkdir dir="build/classes" />
+
+		<manifest file="build/MANIFEST.MF">
+			<attribute name="Implementation-Title" value="JsfFormatPanel" />
+			<attribute name="Implementation-Vendor" value="McDowell" />
+			<attribute name="Implementation-Version" value="${version}" />
+			<attribute name="Implementation-URL" value="http://illegalargumentexception.blogspot.com/2009/08/jsf-custom-format-panel-control-for.html" />
+		</manifest>
+
+		<echo message="Classpath=${jsf.jar}:${el.jar}" />
+		<javac srcdir="./src" destdir="build/classes" target="1.5" debug="on">
+			<classpath path="${jsf.jar}:${el.jar}" />
+		</javac>
+		<jar destfile="build/formatPanelComponent_${version}.jar" manifest="build/MANIFEST.MF">
+			<fileset dir="build/classes" />
+			<fileset dir="src" />
+		</jar>
+	</target>
+
+	<target name="documentation">
+		<xslt style="tagdoc.xslt" in="src/META-INF/i18n.tld" out="build/tagdoc_i18n.html" />
+	</target>
+
+	<target name="clean">
+		<delete file="jsfFormatPanel_${version}.zip" />
+		<delete dir="build" />
+	</target>
+
+</project>

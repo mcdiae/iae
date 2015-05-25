@@ -1,0 +1,1 @@
+SET OPENEJB_HOME=..\..\dependencies\openejb-3.1.1

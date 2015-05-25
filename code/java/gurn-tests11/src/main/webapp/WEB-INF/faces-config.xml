@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE faces-config PUBLIC
+ "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+ "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config>
+  <managed-bean>
+    <managed-bean-name>utils</managed-bean-name>
+    <managed-bean-class>utils.Utils</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>testAction</managed-bean-name>
+    <managed-bean-class>beans.TestAction</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>testValue</managed-bean-name>
+    <managed-bean-class>beans.TestValue</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>testList</managed-bean-name>
+    <managed-bean-class>beans.TestList</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  
+  <managed-bean>
+    <managed-bean-name>functionBean</managed-bean-name>
+    <managed-bean-class>beans.FunctionBean</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>tableBean</managed-bean-name>
+    <managed-bean-class>beans.demo.TableBean</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>selectBean</managed-bean-name>
+    <managed-bean-class>beans.demo.SelectBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>password</managed-bean-name>
+    <managed-bean-class>beans.demo.Password</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>password</property-name>
+      <property-class>java.lang.String</property-class>
+      <value>#{param.password}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>confirmation</property-name>
+      <property-class>java.lang.String</property-class>
+      <value>#{param.confirmation}</value>
+    </managed-property>
+  </managed-bean>
+  
+  <validator>
+    <validator-id>pwvalidator</validator-id>
+    <validator-class>beans.demo.PasswordValidator</validator-class>
+  </validator>
+</faces-config>

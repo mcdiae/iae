@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+  version="1.2">
+  <component>
+    <display-name>formatPanel</display-name>
+    <component-type>illegalargument.jsf.i18n.HtmlFormatPanel</component-type>
+    <component-class>illegalargument.jsf.i18n.HtmlFormatPanel</component-class>
+    <!-- TODO: props for tooling -->
+  </component>
+  <render-kit>
+    <render-kit-id>HTML_BASIC</render-kit-id>
+    <renderer>
+      <display-name>FormatPanelRenderer</display-name>
+      <component-family>illegalargument.jsf.i18n.HtmlFormatPanel</component-family>
+      <renderer-type>illegalargument.jsf.i18n.FormatPanelRenderer</renderer-type>
+      <renderer-class>illegalargument.jsf.i18n.FormatPanelRenderer</renderer-class>
+      <!-- TODO: attributes for tooling -->
+    </renderer>
+  </render-kit>
+
+</faces-config>

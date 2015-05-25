@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE faces-config PUBLIC
+ "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+ "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config>
+
+  <!-- utilities -->
+  <managed-bean>
+    <managed-bean-name>gurn</managed-bean-name>
+    <managed-bean-class>tld.gurn.beans.FnMap</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>components</managed-bean-name>
+    <managed-bean-class>tld.gurn.beans.BindingMap</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+
+  <!-- components -->
+  <component>
+    <display-name>dynamicPanel</display-name>
+    <component-type>tld.gurn.ctrl.components.DynamicPanel</component-type>
+    <component-class>tld.gurn.ctrl.components.DynamicPanel</component-class>
+  </component>
+  <component>
+    <display-name>dynamicCommand</display-name>
+    <component-type>tld.gurn.ctrl.components.DynamicCommand</component-type>
+    <component-class>tld.gurn.ctrl.components.DynamicCommand</component-class>
+  </component>
+  <component>
+    <display-name>dynamicInput</display-name>
+    <component-type>tld.gurn.ctrl.components.DynamicInput</component-type>
+    <component-class>tld.gurn.ctrl.components.DynamicInput</component-class>
+  </component>
+  <component>
+    <display-name>dynamicOutput</display-name>
+    <component-type>tld.gurn.ctrl.components.DynamicTemplate</component-type>
+    <component-class>tld.gurn.ctrl.components.DynamicTemplate</component-class>
+  </component>
+  <component>
+    <display-name>dynamicRepeat</display-name>
+    <component-type>tld.gurn.ctrl.components.DynamicRepeat</component-type>
+    <component-class>tld.gurn.ctrl.components.DynamicRepeat</component-class>
+  </component>
+  <render-kit>
+    <render-kit-id>HTML_BASIC</render-kit-id>
+    <renderer>
+      <display-name>DynamicPanelRenderer</display-name>
+      <component-family>javax.faces.Panel</component-family>
+      <renderer-type>tld.gurn.ctrl.renderers.DynamicPanelRenderer</renderer-type>
+      <renderer-class>tld.gurn.ctrl.renderers.DynamicPanelRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <display-name>DynamicCommandRenderer</display-name>
+      <component-family>javax.faces.Command</component-family>
+      <renderer-type>tld.gurn.ctrl.renderers.DynamicCommandRenderer</renderer-type>
+      <renderer-class>tld.gurn.ctrl.renderers.DynamicCommandRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <display-name>DynamicInputRenderer</display-name>
+      <component-family>javax.faces.Input</component-family>
+      <renderer-type>tld.gurn.ctrl.renderers.DynamicInputRenderer</renderer-type>
+      <renderer-class>tld.gurn.ctrl.renderers.DynamicInputRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <display-name>DynamicTemplateRenderer</display-name>
+      <component-family>javax.faces.Output</component-family>
+      <renderer-type>tld.gurn.ctrl.renderers.DynamicTemplateRenderer</renderer-type>
+      <renderer-class>tld.gurn.ctrl.renderers.DynamicTemplateRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <display-name>DynamicRepeatRenderer</display-name>
+      <component-family>javax.faces.Data</component-family>
+      <renderer-type>tld.gurn.ctrl.renderers.DynamicRepeatRenderer</renderer-type>
+      <renderer-class>tld.gurn.ctrl.renderers.DynamicRepeatRenderer</renderer-class>
+    </renderer>
+  </render-kit>
+</faces-config>

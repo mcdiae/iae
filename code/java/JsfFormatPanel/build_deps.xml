@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright (c) 2009 McDowell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+
+<project name="DEPS" default="default" basedir=".">
+
+	<property name="dir_dependencies" value="${basedir}/dependencies"  />
+	
+	<target name="default" depends="downloadjsf,downloadel" />
+
+	<!-- download Apache MyFaces -->
+	
+	<target name="downloadjsf" depends="checkjsf" unless="present.jsfarchive">
+		<mkdir dir="${dir_dependencies}" />
+		<echo message="downloading JSF" />
+		<copy todir="${dir_dependencies}" flatten="true">
+			<url url="http://mirrors.ukfast.co.uk/sites/ftp.apache.org/myfaces/binaries/myfaces-core-1.2.7-bin.zip" />
+		</copy>
+		<unzip dest="${dir_dependencies}" src="${dir_dependencies}/myfaces-core-1.2.7-bin.zip" />
+	</target>
+
+	<target name="checkjsf">
+		<available file="${dir_dependencies}/myfaces-core-1.2.7-bin.zip" property="present.jsfarchive" />
+		<property name="jsf.jar" value="${dir_dependencies}/myfaces-core-1.2.7-bin/lib/myfaces-api-1.2.7.jar" />
+	</target>
+	
+	<!-- download Apache EL -->
+
+	<target name="downloadel" depends="checkel" unless="present.elarchive">
+		<mkdir dir="${dir_dependencies}" />
+		<echo message="downloading Apache Tomcat for EL dependency" />
+		<copy todir="${dir_dependencies}" flatten="true">
+			<url url="http://www.mirrorservice.org/sites/ftp.apache.org/tomcat/tomcat-6/v6.0.20/bin/apache-tomcat-6.0.20.zip" />
+		</copy>
+		<unzip dest="${dir_dependencies}" src="${dir_dependencies}/apache-tomcat-6.0.20.zip" />
+	</target>
+
+	<target name="checkel">
+		<available file="${dir_dependencies}/apache-tomcat-6.0.20.zip" property="present.elarchive" />
+		<property name="el.jar" value="${dir_dependencies}/apache-tomcat-6.0.20/lib/el-api.jar:${dir_dependencies}/apache-tomcat-6.0.20/lib/jsp-api.jar:${dir_dependencies}/apache-tomcat-6.0.20/lib/servlet-api.jar" />
+	</target>
+	
+</project>

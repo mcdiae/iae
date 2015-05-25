@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>wsbuild</name>
+	<comment></comment>
+	<projects>
+		<project>wsbindings</project>
+		<project>wsboundclient</project>
+		<project>wsboundservice</project>
+		<project>wscontract</project>
+		<project>wsdynamicclient</project>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+</projectDescription>

@@ -1,0 +1,1 @@
+Main-Class: illegalargument.classversion.gui.ClassVersionGui

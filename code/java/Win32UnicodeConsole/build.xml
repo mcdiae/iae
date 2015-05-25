@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="project" default="default" basedir=".">
+	<description>
+            Project Ant build file
+    </description>
+
+	<property name="dir_dependencies" value="${basedir}/dependencies" />
+	<property name="dir.build" value="${basedir}/build" />
+	<property name="dir.build.bin" value="${basedir}/build/bin" />
+
+	<property name="runtime.jar" value="${dir.build.bin}/kernel32.jar" />
+
+	<property name="dir.runtime.classes" value="${dir.build}/classes" />
+	<property name="dir.runtime.src" value="${basedir}/src" />
+	<property name="dir.runtime.test" value="${basedir}/test" />
+
+	<target name="default" depends="downloadjna,clean">
+		<!-- compile -->
+		<mkdir dir="${dir.runtime.classes}" />
+		<javac srcdir="${dir.runtime.src}" destdir="${dir.runtime.classes}" fork="true">
+			<classpath>
+				<fileset file="${asm.jar}" />
+			</classpath>
+		</javac>
+		<javac srcdir="${dir.runtime.test}" destdir="${dir.runtime.classes}" fork="true">
+			<classpath>
+				<dirset dir="${dir.runtime.classes}" />
+				<fileset file="${asm.jar}" />
+			</classpath>
+		</javac>
+		<!-- build jar -->
+		<mkdir dir="${dir.build.bin}" />
+		<jar destfile="${runtime.jar}">
+			<fileset dir="${dir.runtime.classes}" />
+		</jar>
+
+		<echo message="Applications built - use runtests.bat to test code from a console" />
+	</target>
+
+	<!-- clean -->
+	
+	<target name="clean">
+		<delete dir="${dir.build}" />
+	</target>
+	
+	<!-- download JNA -->
+
+	<target name="downloadjna" depends="checkjna" unless="present.jna">
+		<mkdir dir="${dir_dependencies}" />
+		<echo message="downloading JNA" />
+		<copy todir="${dir_dependencies}" flatten="true">
+			<url url="https://jna.dev.java.net/files/documents/6987/115418/jna.jar" />
+		</copy>
+	</target>
+
+	<target name="checkjna">
+		<available file="${dir_dependencies}/jna.jar" property="present.jna" />
+		<property name="asm.jar" value="${dir_dependencies}/jna.jar" />
+	</target>
+
+
+</project>

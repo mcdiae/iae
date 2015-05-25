@@ -1,0 +1,111 @@
+BOILERPLATE
+===========
+
+An API and processor for automatic implementation of equals,
+hashCode and toString methods on Java classes.
+
+This is proof of concept code.
+
+Associated Post:
+http://illegalargumentexception.blogspot.com/2008/12/java-automating-object-equality.html
+
+
+DEPENDENCIES
+============
+
+Processor Runtime:
+ASM 3.1      http://asm.objectweb.org/
+
+Build:
+JUnit 4.5    http://www.junit.org/
+Ant 1.7      http://ant.apache.org/
+
+Tested under Java 6
+
+
+LICENSE
+=======
+
+==start==
+Copyright (c) 2008 McDowell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+==end==
+
+Other terms apply to dependencies:
+ASM    http://asm.objectweb.org/license.html
+JUnit  http://sourceforge.net/projects/junit/
+
+
+PROJECTS
+========
+
+boilerplate           runtime dependency
+boilerplateBuild      Ant build files
+boilerplateProcessor  compile-time class processor
+boilerplateTest       unit tests
+
+
+BUILD INSTRUCTIONS
+==================
+
+When initially loaded in Eclipse, compilation will fail because the ASM and
+JUnit dependencies are missing. Running the build.xml Ant build script should
+download them to the appropriate location if they are not present
+(see build_deps.xml for details).
+
+Running build.xml generates two jar files:
+
+boilerplateBuild/build/bin/boilerplate.jar   runtime classes
+
+boilerplateBuild/build/bin/bpc.jar           class processor tool
+                                             (depends on:
+                                               boilerplate.jar
+                                               asm-all-3.1.jar)
+
+
+GETTING STARTED
+===============
+
+Create a file AutoEqualsImpl.java:
+
+ @AutoEquals
+ public class AutoEqualsImpl {
+     public String foo = "Hello, World!";
+ }
+
+Compile the class:
+
+ javac -cp boilerplate.jar AutoEqualsImpl.java
+
+Process the compiled class directory:
+
+ java -jar bpc.jar .
+
+Verify that the equals and hashCode methods have been added
+with the Sun JDK 6 disassembler:
+
+ javap -classpath . AutoEqualsImpl
+
+
+CRUDE ECLIPSE INTEGRATION
+=========================
+
+Add an Ant builder in the project properties.
+See "boilerplateTest/builder_build.xml" for sample code.

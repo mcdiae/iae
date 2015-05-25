@@ -1,0 +1,129 @@
+Buildfile: /home/user/IBM/rationalsdp7.0/workspace/WebSphereAntFiles/scripts/test/build.xml
+
+test_generateEar:
+      [jar] Building jar: /home/user/IBM/rationalsdp7.0/workspace/WebSphereAntFiles/scripts/test/mywebapp.war
+    [mkdir] Created dir: /home/user/IBM/rationalsdp7.0/workspace/WebSphereAntFiles/scripts/test/earbin/META-INF
+     [move] Moving 1 file to /home/user/IBM/rationalsdp7.0/workspace/WebSphereAntFiles/scripts/test/earbin
+     [copy] Copying 1 file to /home/user/IBM/rationalsdp7.0/workspace/WebSphereAntFiles/scripts/test/earbin/META-INF
+      [jar] Building jar: /home/user/IBM/rationalsdp7.0/workspace/WebSphereAntFiles/scripts/test/mywebappEAR.ear
+
+WAS_wsDefaultBindings:
+
+depCheck:
+[wsDefaultBindings] IBM WebSphere Application Server Release 5
+[wsDefaultBindings] J2EE Application Deploy Tool, Version 5.0
+[wsDefaultBindings] Copyright IBM Corp., 1997-2002
+
+[wsDefaultBindings] Loading /home/user/IBM/rationalsdp7.0/workspace/WebSphereAntFiles/scripts/test/mywebappEAR.ear
+
+[wsDefaultBindings] ------------------------
+
+[wsDefaultBindings] mywebapp.war
+[wsDefaultBindings]   <virtual-host> --> default_host
+
+[wsDefaultBindings] ------------------------
+
+
+[wsDefaultBindings] Saving EAR File to directory
+[wsDefaultBindings] Saved EAR File to directory Successfully
+
+test_wsStartServer:
+
+WAS_wsStartServer:
+
+depCheck:
+
+depCheck:
+[startServer] ADMU0116I: Tool information is being logged in file
+[startServer]            /opt/IBM/SDP70/runtimes/base_v61/profiles/AppSrv01/logs/server1/startServer.log
+[startServer] ADMU0128I: Starting tool with the AppSrv01 profile
+[startServer] ADMU3100I: Reading configuration for server: server1
+[startServer] ADMU3200I: Server launched. Waiting for initialization status.
+[startServer] ADMU3000I: Server server1 open for e-business; process id is 32665
+
+test_wsInstallApp:
+
+WAS_wsInstallApp:
+
+depCheck:
+
+depCheck:
+[wsInstallApp] Installing Application [/home/user/IBM/rationalsdp7.0/workspace/WebSphereAntFiles/scripts/test/mywebappEAR.ear]...
+  [wsadmin] WASX7209I: Connected to process "server1" on node localhostNode01 using SOAP connector;  The type of process is: UnManagedProcess
+  [wsadmin] ADMA5016I: Installation of mywebappEAR started.
+  [wsadmin] ADMA5058I: Application and module versions are validated with versions of deployment targets.
+  [wsadmin] ADMA5005I: The application mywebappEAR is configured in the WebSphere Application Server repository.
+  [wsadmin] ADMA5053I: The library references for the installed optional package are created.
+  [wsadmin] ADMA5005I: The application mywebappEAR is configured in the WebSphere Application Server repository.
+  [wsadmin] ADMA5001I: The application binaries are saved in /opt/IBM/SDP70/runtimes/base_v61/profiles/AppSrv01/wstemp/Script11bd6a3587b/workspace/cells/localhostNode01Cell/applications/mywebappEAR.ear/mywebappEAR.ear
+  [wsadmin] ADMA5005I: The application mywebappEAR is configured in the WebSphere Application Server repository.
+  [wsadmin] SECJ0400I: Successfuly updated the application mywebappEAR with the appContextIDForSecurity information.
+  [wsadmin] ADMA5011I: The cleanup of the temp directory for application mywebappEAR is complete.
+  [wsadmin] ADMA5013I: Application mywebappEAR installed successfully.
+[wsInstallApp] Installed Application [/home/user/IBM/rationalsdp7.0/workspace/WebSphereAntFiles/scripts/test/mywebappEAR.ear]
+
+WAS_wsListApps:
+
+depCheck:
+  [wsadmin] WASX7209I: Connected to process "server1" on node localhostNode01 using SOAP connector;  The type of process is: UnManagedProcess
+  [wsadmin] DefaultApplication
+  [wsadmin] IBMUTC
+  [wsadmin] ivtApp
+  [wsadmin] mywebappEAR
+  [wsadmin] query
+
+test_wsStartApp:
+
+WAS_wsStartApp:
+
+depCheck:
+
+depCheck:
+[wsStartApp] Starting Application [mywebappEAR]...
+  [wsadmin] WASX7209I: Connected to process "server1" on node localhostNode01 using SOAP connector;  The type of process is: UnManagedProcess
+[wsStartApp] Started Application [mywebappEAR]
+
+test_wsStopApp:
+
+WAS_wsStopApp:
+
+depCheck:
+
+depCheck:
+[wsStopApp] Stopping Application [mywebappEAR]...
+  [wsadmin] WASX7209I: Connected to process "server1" on node localhostNode01 using SOAP connector;  The type of process is: UnManagedProcess
+[wsStopApp] Stopped Application [mywebappEAR]
+
+test_wsUninstallApp:
+
+WAS_wsUninstallApp:
+
+depCheck:
+
+depCheck:
+[wsUninstallApp] Uninstalling Application [mywebappEAR]...
+  [wsadmin] WASX7209I: Connected to process "server1" on node localhostNode01 using SOAP connector;  The type of process is: UnManagedProcess
+  [wsadmin] ADMA5017I: Uninstallation of mywebappEAR started.
+  [wsadmin] ADMA5104I: The server index entry for WebSphere:cell=localhostNode01Cell,node=localhostNode01 is updated successfully.
+  [wsadmin] ADMA5102I: The configuration data for mywebappEAR from the configuration repository is deleted successfully.
+  [wsadmin] ADMA5011I: The cleanup of the temp directory for application mywebappEAR is complete.
+  [wsadmin] ADMA5106I: Application mywebappEAR uninstalled successfully.
+[wsUninstallApp] Uninstalled Application [mywebappEAR]
+
+default:
+
+WAS_wsStopServer:
+
+depCheck:
+
+depCheck:
+[stopServer] ADMU0116I: Tool information is being logged in file
+[stopServer]            /opt/IBM/SDP70/runtimes/base_v61/profiles/AppSrv01/logs/server1/stopServer.log
+[stopServer] ADMU0128I: Starting tool with the AppSrv01 profile
+[stopServer] ADMU3100I: Reading configuration for server: server1
+[stopServer] ADMU3201I: Server stop request issued. Waiting for stop status.
+[stopServer] ADMU4000I: Server server1 stop completed.
+
+
+BUILD SUCCESSFUL
+Total time: 3 minutes 43 seconds

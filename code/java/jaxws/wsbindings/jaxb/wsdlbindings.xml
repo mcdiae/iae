@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jaxws:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	wsdlLocation="../../wscontract/src/main/resources/wsdl/MaintainAddress.wsdl">
+	<jaxws:bindings
+		node="wsdl:definitions/wsdl:types/xsd:schema[@targetNamespace='http://demo.iae.ws/MaintainAddress/']">
+		<jaxb:schemaBindings>
+			<jaxb:package name="demo.ws.service" />
+		</jaxb:schemaBindings>
+	</jaxws:bindings>
+	<jaxws:package name="demo.ws.service" />
+	<!-- jaxws:enableAsyncMapping>true</jaxws:enableAsyncMapping -->
+</jaxws:bindings>

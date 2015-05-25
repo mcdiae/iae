@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="findXmlValidationMechanism" default="default" basedir=".">
+    <description>
+            Builds and runs the project
+    </description>
+
+    <target name="default" depends="clean,build,run" />
+
+    <target name="build">
+    	<mkdir dir="./build/classes" />
+    	<javac srcdir="./src" destdir="build/classes" target="1.6" />
+    	<jar destfile="build/fxvm.jar">
+    		<fileset dir="./build/classes" />
+    		<fileset dir="./src" />
+    	</jar>
+    </target>
+
+	<target name="run">
+		<java classname="xmlvalidation.InfoDump" classpath="build/fxvm.jar">
+			<arg file="sample_dtd.xml"/>
+			<arg file="sample_xsd.xml"/>
+			<arg file="build.xml"/>
+		</java>
+	</target>
+	
+	<target name="clean">
+		<delete dir="build" />
+	</target>
+	
+</project>

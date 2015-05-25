@@ -1,0 +1,4 @@
+This project should be built with Maven 3.
+
+Build command:
+  mvn clean install

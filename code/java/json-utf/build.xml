@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- packages the Maven-produced binaries -->
+<project name="packageBinaries" default="packageBinaries" basedir=".">
+	<property name="prog.version" value="0.0.1" />
+	<property name="prog.name" value="json-utf" />
+
+	<target name="packageBinaries" depends="failIfjarDoesNotExist">
+		<zip destfile="${prog.name}-${prog.version}.zip" basedir="." includes="target/*.jar,*.TXT,target/site/apidocs/**" />
+	</target>
+
+	<target name="failIfjarDoesNotExist" depends="checkJarExists" unless="prog.jar.present">
+		<fail message="Cannot package library; Jar must be built by Maven" />
+	</target>
+
+	<target name="checkJarExists">
+		<available file="target/${prog.name}-${prog.version}.jar" property="prog.jar.present" />
+	</target>
+</project>

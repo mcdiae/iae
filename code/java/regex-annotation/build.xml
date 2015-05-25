@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- packages the Maven-produced binaries -->
+<project name="packageBinaries" default="packageBinaries" basedir=".">
+	<property name="ra.version" value="0.0.2" />
+
+	<target name="packageBinaries" depends="failIfjarDoesNotExist">
+		<zip destfile="regex-annotation-${ra.version}.zip" basedir="." includes="target/*.jar,*.TXT,target/site/apidocs/**" />
+	</target>
+
+	<target name="failIfjarDoesNotExist" depends="checkJarExists" unless="regex.annotation.jar.present">
+		<fail message="Cannot package library; Jar must be built by Maven" />
+	</target>
+
+	<target name="checkJarExists">
+		<available file="target/regex-annotation-${ra.version}.jar" property="regex.annotation.jar.present" />
+	</target>
+</project>

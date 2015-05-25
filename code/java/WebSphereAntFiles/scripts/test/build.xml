@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+
+<!--
+Copyright (c) 2008 McDowell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+
+<project name="project" default="default" basedir=".">
+	<description>
+            Test script
+    </description>
+
+	<import file="../was/wsStartServer.xml" />
+	<import file="../was/wsStopServer.xml" />
+	<import file="../was/wsListApps.xml" />
+	<import file="../was/wsInstallApp.xml" />
+	<import file="../was/wsUninstallApp.xml" />
+	<import file="../was/wsStartApp.xml" />
+	<import file="../was/wsStopApp.xml" />
+	<import file="../was/wsDefaultBindings.xml" />
+
+	<target name="default" depends="test_wsUninstallApp">
+		<!-- stop server after tasks run -->
+		<antcall target="WAS_wsStopServer" />
+	</target>
+
+	<target name="test_wsUninstallApp" depends="test_wsStopApp">
+		<property name="was_appname" value="mywebappEAR" />
+		<antcall target="WAS_wsUninstallApp" />
+	</target>
+
+	<target name="test_wsStopApp" depends="test_wsStartApp">
+		<property name="was_appname" value="mywebappEAR" />
+		<antcall target="WAS_wsStopApp" />
+	</target>
+
+	<target name="test_wsStartApp" depends="test_wsInstallApp">
+		<property name="was_appname" value="mywebappEAR" />
+		<antcall target="WAS_wsStartApp" />
+	</target>
+
+	<target name="test_wsInstallApp" depends="test_wsStartServer">
+		<property name="was_ear" value="${mywebappear}" />
+		<antcall target="WAS_wsInstallApp" />
+
+		<!-- list installed apps after install -->
+		<antcall target="WAS_wsListApps" />
+	</target>
+
+	<target name="test_wsStartServer" depends="test_generateEar">
+		<antcall target="WAS_wsStartServer" />
+	</target>
+
+	<target name="test_generateEar">
+		<jar destfile="mywebapp.war">
+			<fileset dir="./war">
+			</fileset>
+		</jar>
+		<mkdir dir="./earbin/META-INF" />
+		<move file="mywebapp.war" todir="./earbin" />
+		<copy file="./ear/META-INF/application.xml" todir="./earbin/META-INF" />
+		<jar destfile="${mywebappear}">
+			<fileset dir="./earbin" />
+		</jar>
+
+		<!-- add WAS-specific config info to the WAR -->
+		<property name="was_ear" value="${mywebappear}" />
+		<antcall target="WAS_wsDefaultBindings" />
+	</target>
+
+</project>
